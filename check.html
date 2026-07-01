@@ -2,77 +2,145 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Центр Проверки Кодов</title>
+    <title>Склад Фабрики Create 27</title>
     <style>
-        body { background-color: #1a1a1a; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
-        h1 { color: #00eeee; }
-        .container { background: #2c3e50; padding: 20px; border-radius: 10px; max-width: 500px; margin: 20px auto; border: 2px solid #34495e; }
-        input { padding: 10px; font-size: 16px; width: 80%; max-width: 350px; border-radius: 5px; border: none; text-align: center; font-family: monospace; font-size: 18px; }
-        button { padding: 10px 20px; font-size: 16px; border-radius: 5px; border: none; background: #27ae60; color: #fff; font-weight: bold; cursor: pointer; margin-top: 15px; }
-        #output { margin-top: 20px; padding: 15px; border-radius: 5px; font-size: 18px; text-align: left; display: none; line-height: 1.5; }
+        body { background-color: #111; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
+        h1 { color: #f39c12; margin-bottom: 5px; }
+        .main-layout { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .panel { background: #2c3e50; padding: 20px; border-radius: 10px; border: 2px solid #34495e; flex: 1; min-width: 320px; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        input { padding: 12px; width: 80%; border-radius: 5px; border: none; text-align: center; font-family: monospace; font-size: 18px; margin-bottom: 10px; background: #fff; color: #000; }
+        button { padding: 10px 20px; font-size: 16px; border-radius: 5px; border: none; background: #27ae60; color: #fff; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #2ecc71; }
+        
+        /* Визуализация вигвама и ложа */
+        #dragons-lair { background: #1a252f; border: 2px dashed #e67e22; border-radius: 10px; padding: 15px; margin-top: 15px; text-align: left; position: relative; }
+        .lair-title { font-weight: bold; color: #e67e22; margin-bottom: 10px; text-transform: uppercase; font-size: 14px; }
+        .dragon-status { background: #111; padding: 8px; border-radius: 5px; margin-bottom: 8px; font-size: 14px; border-left: 4px solid #f39c12; }
+        .item-text { font-weight: bold; }
+        
+        /* Стилизация предметов склада */
+        #vault { background: #111; padding: 15px; border-radius: 8px; text-align: left; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-family: monospace; font-size: 15px; }
+        .vault-slot { background: #222; padding: 8px; border-radius: 4px; border: 1px solid #333; display: flex; justify-content: space-between; }
+        .qty { color: #00eeee; font-weight: bold; }
+        
+        #output { margin-top: 15px; padding: 15px; border-radius: 5px; font-size: 16px; text-align: left; display: none; line-height: 1.4; border: 1px solid #2ecc71; background: rgba(46, 204, 113, 0.1); }
     </style>
 </head>
 <body>
-    <h1>🖥️ Валидатор Кодов «Which Hand»</h1>
-    <p>Анти-чит система фабрики Create 27</p>
-    <div class="container">
-        <input type="text" id="code-input" placeholder="Вставь код сюда..."><br>
-        <button onclick="validateCode()">Проверить подлинность</button>
-        <div id="output"></div>
+
+    <h1>🤖 Склад и Валидатор Фабрики «Create 27»</h1>
+    <p style="color: #bbb; margin-top: 0;">Управление ресурсами и присмотр за серебряными драконидами</p>
+
+    <div class="main-layout">
+        <!-- Левая панель: Ввод кодов -->
+        <div class="panel">
+            <h3>🔑 Ввод анти-чит шифра</h3>
+            <input type="text" id="code-input" placeholder="Вставь код победы..."><br>
+            <button onclick="validateAndDeposit()">Передать дракончикам</button>
+            <div id="output"></div>
+            
+            <!-- Место обитания -->
+            <div id="dragons-lair">
+                <div class="lair-title">⛺ Лавовый Вигвам и Цветок-Ложе</div>
+                <div class="dragon-status" style="border-color: #f1c40f;">💤 <span class="item-text" style="color:#f1c40f;">Брат Толстяк:</span> Лежит на угле, переваривает крабиков-клоунов.</div>
+                <div class="dragon-status" style="border-color: #2ecc71;">⚡ <span class="item-text" style="color:#2ecc71;">Приёмная Сестра:</span> Охраняет периметр, генерирует живую био-жижу.</div>
+                <div class="dragon-status" style="border-color: #00eeee;">❄️ <span class="item-text" style="color:#00eeee;">Мелкий и Родная Сестра:</span> Расправили серебряные крылья, обживают красный пол вигвама.</div>
+                <div class="dragon-status" style="border-color: #9b59b6;">🌸 <span class="item-text" style="color:#9b59b6;">Цветок-Лоно:</span> Работает климат-контроль, выделяются съедобные споры.</div>
+            </div>
+        </div>
+
+        <!-- Правая панель: Сейф с ресурсами -->
+        <div class="panel">
+            <h3>📦 Королевская Сокровищница</h3>
+            <div id="vault">
+                <div class="vault-slot"><span>💎 Алмазы:</span> <span class="qty" id="v-diamonds">2</span></div>
+                <div class="vault-slot"><span>💚 Изумруды:</span> <span class="qty" id="v-emeralds">2</span></div>
+                <div class="vault-slot"><span>⚙️ Миксеры (Mixer):</span> <span class="qty" id="v-mixers">1</span></div>
+                <div class="vault-slot"><span>⚙️ Помпы (Pump):</span> <span class="qty" id="v-pumps">1</span></div>
+                <div class="vault-slot"><span>⚙️ Поршни (Piston):</span> <span class="qty" id="v-pistons">0</span></div>
+                <div class="vault-slot"><span>⚙️ Жел. листы (Sheet):</span> <span class="qty" id="v-sheets">2</span></div>
+                <div class="vault-slot"><span>⚙️ Валы (Shaft):</span> <span class="qty" id="v-shafts">2</span></div>
+                <div class="vault-slot"><span>⚙️ Бол. шестерни:</span> <span class="qty" id="v-cogs">2</span></div>
+                <div class="vault-slot"><span>🪣 Ведро воды:</span> <span class="qty" id="v-water">1</span></div>
+                <div class="vault-slot"><span>⬛ Уголь:</span> <span class="qty" id="v-coal">28</span></div>
+            </div>
+            <button style="margin-top:20px; background:#c0392b;" onclick="resetVault()">Сбросить склад</button>
+        </div>
     </div>
 
 <script>
+    // Стартовый сбалансированный баланс, сохранённый в браузере
+    var vault = { diamonds: 2, emeralds: 2, mixers: 1, pumps: 1, pistons: 0, sheets: 2, shafts: 2, cogs: 2, water: 1, coal: 28 };
+    if(localStorage.getItem("create27_vault")) { vault = JSON.parse(localStorage.getItem("create27_vault")); }
+    updateVaultUI();
+
     function generateHash(str) {
-        var hash = 0;
-        for (var i = 0; i < str.length; i++) {
-            hash = (hash << 5) - hash + str.charCodeAt(i);
-            hash |= 0;
-        }
+        var hash = 0; for (var i = 0; i < str.length; i++) { hash = (hash << 5) - hash + str.charCodeAt(i); hash |= 0; }
         return Math.abs(hash).toString(16);
     }
 
-    function validateCode() {
+    function updateVaultUI() {
+        document.getElementById("v-diamonds").innerText = vault.diamonds;
+        document.getElementById("v-emeralds").innerText = vault.emeralds;
+        document.getElementById("v-mixers").innerText = vault.mixers;
+        document.getElementById("v-pumps").innerText = vault.pumps;
+        document.getElementById("v-pistons").innerText = vault.pistons;
+        document.getElementById("v-sheets").innerText = vault.sheets;
+        document.getElementById("v-shafts").innerText = vault.shafts;
+        document.getElementById("v-cogs").innerText = vault.cogs;
+        document.getElementById("v-water").innerText = vault.water;
+        document.getElementById("v-coal").innerText = vault.coal;
+        localStorage.setItem("create27_vault", JSON.stringify(vault));
+    }
+
+    function validateAndDeposit() {
         var code = document.getElementById("code-input").value.trim().toUpperCase();
         var out = document.getElementById("output");
         out.style.display = "block";
 
         var parts = code.split("-");
         if (parts.length !== 4 || parts[0] !== "WH") {
-            out.innerHTML = "<span style='color:#e74c3c; font-weight:bold;'>❌ КРИТИЧЕСКАЯ ОШИБКА: Код поддельный или взломан!</span>";
-            return;
+            out.innerHTML = "<span style='color:#e74c3c; font-weight:bold;'>❌ Ошибка: Код поддельный или кривой! Дракониды рычат.</span>"; return;
         }
 
-        var hands = parseInt(parts[1]);
-        var timeLetter = parts[2];
-        var clientHash = parts[3];
-
+        var hands = parseInt(parts[1]); var timeLetter = parts[2]; var clientHash = parts[3];
         var salt = "Create27SecureSalt";
-        var serverHash = generateHash(hands + timeLetter + salt);
+        var serverHash = generateHash(hands + timeLetter + salt).toUpperCase();
 
-        if (clientHash !== serverHash.toUpperCase()) {
-            out.innerHTML = "<span style='color:#e74c3c; font-weight:bold;'>❌ ОБНАРУЖЕН ОБМАН: Подпись не совпадает! Халява не пройдёт!</span>";
-            return;
+        if (clientHash !== serverHash) {
+            out.innerHTML = "<span style='color:#e74c3c; font-weight:bold;'>❌ ОБНАРУЖЕН ОБМАН: Подпись не совпадает! Влад, залогинься нормально.</span>"; return;
         }
 
-        var timeText = timeLetter === "D" ? "День ☀️" : "Ночь 🌙";
-        var rewardText = "";
-
+        // Логика начисления наград
+        var addLog = "";
         if (hands === 50) {
-            rewardText = "💎 Алмаз (1 шт)<br>💚 Изумруд (1 шт)<br>⚙️ <b>Механическая помпа (Mechanical Pump)</b> [Create]";
+            vault.diamonds += 1; vault.emeralds += 1; vault.pumps += 1;
+            addLog = "💎 +1 Алмаз, 💚 +1 Изумруд, ⚙️ +1 Помпа";
         } else if (hands >= 40) {
-            rewardText = "💎 Алмаз (1 шт)<br>⚙️ <b>Механический миксер (Mechanical Mixer)</b> [Create]";
+            vault.diamonds += 1; vault.mixers += 1;
+            addLog = "💎 +1 Алмаз, ⚙️ +1 Миксер";
         } else if (hands >= 30) {
-            rewardText = "⚙️ <b>Механический поршень (Mechanical Piston)</b> [Create]";
+            vault.pistons += 1;
+            addLog = "⚙️ +1 Механический Поршень";
         } else if (hands >= 15) {
-            rewardText = "⚙️ <b>Железный лист (Iron Sheet)</b> (2 шт)<br>⚙️ <b>Механический вал (Shaft)</b> (2 шт) [Create]";
+            vault.sheets += 2; vault.shafts += 2;
+            addLog = "⚙️ +2 Жел. Листа, ⚙️ +2 Вала";
         } else {
-            rewardText = "⬛ <b>Уголь</b> (8 шт) для фабричных костров";
+            vault.coal += 8;
+            addLog = "⬛ +8 Угля";
         }
 
-        out.innerHTML = "<span style='color:#2ecc71; font-weight:bold;'>✅ КОД ПОДЛИННЫЙ! РАУНД СЫГРАН ЧЕСТНО!</span><br>" +
-                        "<b>Сложность:</b> " + hands + " рук<br>" +
-                        "<b>Режим:</b> " + timeText + "<br><br>" +
-                        "<span style='color:#f39c12; font-weight:bold;'>🎁 Одобренная награда:</span><br>" + rewardText;
+        updateVaultUI();
+        var timeText = timeLetter === "D" ? "День ☀️" : "Ночь 🌙";
+        out.innerHTML = "<span style='color:#2ecc71; font-weight:bold;'>✅ КОД РАСШИФРОВАН!</span><br>Сложность: " + hands + " рук (" + timeText + ")<br>📦 Дракончики утащили в вигвам:<br><span style='color:#f39c12; font-weight:bold;'>" + addLog + "</span>";
+        document.getElementById("code-input").value = "";
+    }
+
+    function resetVault() {
+        if(confirm("Реально очистить сейф? Дракончики расстроятся.")) {
+            vault = { diamonds: 0, emeralds: 0, mixers: 0, pumps: 0, pistons: 0, sheets: 0, shafts: 0, cogs: 0, water: 0, coal: 0 };
+            updateVaultUI();
+        }
     }
 </script>
 </body>
