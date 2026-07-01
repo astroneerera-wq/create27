@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Which Hand Game</title>
+    <title>Create 27: Which Hand Edition</title>
     <style>
         body { background-color: #1a1a1a; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
         h1 { color: #f39c12; }
@@ -24,6 +24,7 @@
         .win-banner { background: #27ae60; color: #fff; }
         .lose-banner { background: #c0392b; color: #fff; }
         .code-box { background: #000; color: #00ff00; padding: 5px 10px; font-family: monospace; border-radius: 3px; font-size: 18px; margin-top: 10px; display: inline-block; word-break: break-all; }
+        .link-btn { background: #00eeee; color: #111; margin-top: 10px; display: inline-block; text-decoration: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -34,7 +35,7 @@
         <button id="start-btn" onclick="initGame()">Старт</button>
     </div>
     <div id="status-panel">
-        <div id="necklace">💎 Ожерелье: <span id="diamond-count">0</span> алмазов</div>
+        <div id="necklace">💎 Ожерелье: <span id="diamond-count">0</span> ловушек</div>
         <div id="time-state">Время суток: <span id="time-val">---</span></div>
     </div>
     <div id="result-banner"></div>
@@ -70,7 +71,7 @@
         
         var timeVal = document.getElementById("time-val");
         timeVal.innerText = timeOfDay; timeVal.className = timeOfDay === "День" ? "time-day" : "time-night";
-        document.getElementById("log").innerHTML = "Раунд начался! Время: " + timeOfDay + ". Ловушек: " + blackCubesCount;
+        document.getElementById("log").innerHTML = "Раунд начался! Ловушек: " + blackCubesCount;
 
         var openSlots = []; for(var i = 0; i < handsCount; i++) openSlots.push(i);
 
@@ -132,18 +133,13 @@
             card.innerHTML = "<span class='item-white'>⬜ Белый куб</span>"; showResult(true);
         } else if(content === "Жаба") {
             card.innerHTML = "<span class='item-frog'>🐸 Жаба</span>"; frogInPocket = index;
-            document.getElementById("log").innerHTML = "Жаба в кармане. Кликни по открытой пустой руке.";
         } else if(content === "Палец-указатель") {
             card.innerHTML = "<span class='item-finger'>🫵 Палец</span>"; activeScanner = true;
         }
     }
 
     function generateHash(str) {
-        var hash = 0;
-        for (var i = 0; i < str.length; i++) {
-            hash = (hash << 5) - hash + str.charCodeAt(i);
-            hash |= 0;
-        }
+        var hash = 0; for (var i = 0; i < str.length; i++) { hash = (hash << 5) - hash + str.charCodeAt(i); hash |= 0; }
         return Math.abs(hash).toString(16);
     }
 
@@ -153,12 +149,10 @@
         if(isWin) {
             var tLetter = timeOfDay === "День" ? "D" : "N";
             var salt = "Create27SecureSalt";
-            var rawData = handsCount + tLetter + salt;
-            var signature = generateHash(rawData);
+            var signature = generateHash(handsCount + tLetter + salt);
             var secretCode = "WH-" + handsCount + "-" + tLetter + "-" + signature;
-            
             banner.className = "result-banner win-banner";
-            banner.innerHTML = "ПОБЕДА! Скопируй этот код анти-чит валидации: <br><div class='code-box'>" + secretCode + "</div>";
+            banner.innerHTML = "ПОБЕДА! Код анти-чита: <br><div class='code-box'>" + secretCode + "</div><br><a href='https://github.io' target='_blank' class='link-btn'>Перейти на Склад ➡️</a>";
         } else {
             banner.className = "result-banner lose-banner"; banner.innerText = "ПРОИГРЫШ!";
         }
