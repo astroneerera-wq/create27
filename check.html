@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Центр Проверки Кодов</title>
+    <style>
+        body { background-color: #1a1a1a; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+        h1 { color: #00eeee; }
+        .container { background: #2c3e50; padding: 20px; border-radius: 10px; max-width: 500px; margin: 20px auto; border: 2px solid #34495e; }
+        input { padding: 10px; font-size: 16px; width: 80%; max-width: 350px; border-radius: 5px; border: none; text-align: center; font-family: monospace; font-size: 18px; }
+        button { padding: 10px 20px; font-size: 16px; border-radius: 5px; border: none; background: #27ae60; color: #fff; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        #output { margin-top: 20px; padding: 15px; border-radius: 5px; font-size: 18px; text-align: left; display: none; line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <h1>🖥️ Валидатор Кодов «Which Hand»</h1>
+    <p>Анти-чит система фабрики Create 27</p>
+    <div class="container">
+        <input type="text" id="code-input" placeholder="Вставь код сюда..."><br>
+        <button onclick="validateCode()">Проверить подлинность</button>
+        <div id="output"></div>
+    </div>
+
+<script>
+    function generateHash(str) {
+        var hash = 0;
+        for (var i = 0; i < str.length; i++) {
+            hash = (hash << 5) - hash + str.charCodeAt(i);
+            hash |= 0;
+        }
+        return Math.abs(hash).toString(16);
+    }
+
+    function validateCode() {
+        var code = document.getElementById("code-input").value.trim().toUpperCase();
+        var out = document.getElementById("output");
+        out.style.display = "block";
+
+        var parts = code.split("-");
+        if (parts.length !== 4 || parts[0] !== "WH") {
+            out.innerHTML = "<span style='color:#e74c3c; font-weight:bold;'>❌ КРИТИЧЕСКАЯ ОШИБКА: Код поддельный или взломан!</span>";
+            return;
+        }
+
+        var hands = parseInt(parts[1]);
+        var timeLetter = parts[2];
+        var clientHash = parts[3];
+
+        // Проверка криптографической подписи
+        var salt = "Create27SecureSalt";
+        var serverHash = generateHash(hands + timeLetter + salt);
+
+        if (clientHash !== serverHash.toUpperCase()) {
+            out.innerHTML = "<span style='color:#e74c3c; font-weight:bold;'>❌ ОБНАРУЖЕН ОБМАН: Подпись не совпадает! Халява не пройдёт!</span>";
+            return;
+        }
+
+        var timeText = timeLetter === "D" ? "День ☀️" : "Ночь 🌙";
+        var rewardText = "";
+
+        if (hands === 50) {
+            rewardText = "💎 Алмаз (1 шт)<br>💚 Изумруд (1 шт)<br>⚙️ <b>Механическая помпа (Mechanical Pump)</b> [Create]";
+        } else if (hands >= 40) {
+            rewardText = "💎 Алмаз (1 шт)<br>⚙️ <b>Механический миксер (Mechanical Mixer)</b> [Create]";
+        } else if (hands >= 30) {
+            rewardText = "💚 Изумруд (1 шт)<br>⚙️ <b>Механический поршень (Mechanical Piston)</b> [Create]";
+        } else if (hands >= 11) {
+            rewardText = "⚙️ <b>Железный лист (Iron Sheet)</b> (1 шт) [Create]";
+        } else {
+            rewardText = "⬛ <b>Уголь</b> (4 шт) для карманного костра";
+        }
+
+        out.innerHTML = "<span style='color:#2ecc71; font-weight:bold;'>✅ КОД ПОДЛИННЫЙ! РАУНД СЫГРАН ЧЕСТНО!</span><br>" +
+                        "<b>Сложность:</b> " + hands + " рук<br>" +
+                        "<b>Режим:</b> " + timeText + "<br><br>" +
+                        "<span style='color:#f39c12; font-weight:bold;'>🎁 Одобренная награда:</span><br>" + rewardText;
+    }
+</script>
+</body>
+</html>
