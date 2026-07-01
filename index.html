@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Which Hand Game</title>
+    <style>
+        body { background-color: #1a1a1a; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+        h1 { color: #f39c12; }
+        #setup-area, #status-panel { background: #2c3e50; padding: 15px; border-radius: 10px; max-width: 600px; margin: 20px auto; border: 2px solid #34495e; }
+        #necklace { font-size: 24px; color: #00eeee; margin-bottom: 10px; }
+        .time-day { color: #f1c40f; font-weight: bold; }
+        .time-night { color: #9b59b6; font-weight: bold; }
+        select, button { padding: 8px 15px; font-size: 16px; border-radius: 5px; border: none; margin: 5px; font-weight: bold; cursor: pointer; }
+        #start-btn { background: #27ae60; color: white; }
+        #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; max-width: 1000px; margin: 20px auto; }
+        .hand-card { background: #34495e; border: 2px solid #2c3e50; border-radius: 8px; padding: 20px 5px; font-size: 16px; cursor: pointer; user-select: none; }
+        .opened { background: #222 !important; cursor: default; }
+        #log { background: #111; padding: 15px; border-radius: 8px; max-width: 600px; margin: 20px auto; min-height: 50px; border-left: 5px solid #f39c12; text-align: left; }
+        .item-frog { color: #2ecc71; font-weight: bold; }
+        .item-finger { color: #3498db; font-weight: bold; }
+        .item-black { color: #e74c3c; font-weight: bold; }
+        .item-white { color: #ffffff; font-weight: bold; }
+        #result-banner { font-size: 20px; font-weight: bold; margin: 15px; padding: 15px; border-radius: 5px; display: none; }
+        .win-banner { background: #27ae60; color: #fff; }
+        .lose-banner { background: #c0392b; color: #fff; }
+        .code-box { background: #000; color: #00ff00; padding: 5px 10px; font-family: monospace; border-radius: 3px; font-size: 18px; margin-top: 10px; display: inline-block; word-break: break-all; }
+    </style>
+</head>
+<body>
+    <h1>🤖 Игра «Which Hand»</h1>
+    <div id="setup-area">
+        <label for="hands-select">Количество рук: </label>
+        <select id="hands-select"></select>
+        <button id="start-btn" onclick="initGame()">Старт</button>
+    </div>
+    <div id="status-panel">
+        <div id="necklace">💎 Ожерелье: <span id="diamond-count">0</span> алмазов</div>
+        <div id="time-state">Время суток: <span id="time-val">---</span></div>
+    </div>
+    <div id="result-banner"></div>
+    <div id="log">Выберите параметры и нажмите Старт...</div>
+    <div id="grid"></div>
+
+<script>
+    var select = document.getElementById("hands-select");
+    for (var i = 2; i <= 50; i++) {
+        var opt = document.createElement("option");
+        opt.value = i; opt.innerText = i;
+        if (i === 15) opt.selected = true;
+        select.appendChild(opt);
+    }
+
+    var handsCount, items, timeOfDay, blackCubesCount, frogInPocket, activeScanner;
+
+    function initGame() {
+        handsCount = parseInt(document.getElementById("hands-select").value);
+        items = []; for (var i = 0; i < handsCount; i++) items.push("Пусто");
+        timeOfDay = Math.random() > 0.5 ? "День" : "Ночь";
+        
+        if (handsCount === 50) blackCubesCount = 10;
+        else if (handsCount === 2 || handsCount === 3) blackCubesCount = 1;
+        else if (handsCount <= 5) blackCubesCount = 2;
+        else if (handsCount <= 12) blackCubesCount = Math.floor(Math.random() * 2) + 2;
+        else if (handsCount <= 22) blackCubesCount = Math.floor(Math.random() * 2) + 4;
+        else blackCubesCount = Math.floor(Math.random() * 3) + 6;
+
+        frogInPocket = null; activeScanner = false;
+        document.getElementById("result-banner").style.display = "none";
+        document.getElementById("diamond-count").innerText = blackCubesCount;
+        
+        var timeVal = document.getElementById("time-val");
+        timeVal.innerText = timeOfDay; timeVal.className = timeOfDay === "День" ? "time-day" : "time-night";
+        document.getElementById("log").innerHTML = "Раунд начался! Время: " + timeOfDay + ". Ловушек: " + blackCubesCount;
+
+        var openSlots = []; for(var i = 0; i < handsCount; i++) openSlots.push(i);
+
+        function placeItem(itemName) {
+            if (openSlots.length === 0) return;
+            var randIndex = Math.floor(Math.random() * openSlots.length);
+            var slot = openSlots.splice(randIndex, 1);
+            items[slot] = itemName;
+        }
+
+        placeItem("Белый куб");
+        for(var i = 0; i < blackCubesCount; i++) placeItem("Чёрный куб");
+        var maxItems = handsCount > 8 ? 2 : 1;
+        if (handsCount > 3) {
+            for(var i = 0; i < maxItems; i++) placeItem("Жаба");
+            for(var i = 0; i < maxItems; i++) placeItem("Палец-указатель");
+        }
+
+        var grid = document.getElementById("grid"); grid.innerHTML = "";
+        for(var i = 0; i < handsCount; i++) {
+            var div = document.createElement("div");
+            div.className = "hand-card"; div.id = "hand-" + i; div.innerText = "Рука " + (i + 1);
+            div.setAttribute("data-index", i);
+            div.onclick = function() { clickHand(parseInt(this.getAttribute("data-index"))); };
+            grid.appendChild(div);
+        }
+    }
+
+    function clickHand(index) {
+        var card = document.getElementById("hand-" + index);
+        if(card.classList.contains("opened") && frogInPocket === null) return;
+
+        if(activeScanner) {
+            var isBlack = items[index] === "Чёрный куб";
+            var ans = isBlack ? "НЕТ" : "ДА";
+            if(timeOfDay === "Ночь") ans = isBlack ? "ДА [Враньё!]" : "НЕТ [Враньё!]";
+            document.getElementById("log").innerHTML = "Сканер Руки " + (index + 1) + ": " + ans;
+            activeScanner = false; return;
+        }
+
+        if(frogInPocket !== null) {
+            if(!card.classList.contains("opened") || card.innerText !== "Пусто") return;
+            frogInPocket = null; card.innerHTML = "<span class='item-frog'>🐸 Жаба-радар</span>";
+            var next = index + 1 < handsCount ? index + 1 : index - 1;
+            var inside = items[next];
+            var msg = inside === "Пусто" ? "Тихо." : "Вижу: " + inside;
+            document.getElementById("log").innerHTML = "Жаба проверила Руку " + (next + 1) + ": " + msg;
+            return;
+        }
+
+        card.classList.add("opened");
+        var content = items[index];
+
+        if(content === "Пусто") {
+            card.innerText = "Пусто"; document.getElementById("log").innerHTML = "Рука пустая.";
+        } else if(content === "Чёрный куб") {
+            card.innerHTML = "<span class='item-black'>⬛ Чёрный куб</span>"; showResult(false);
+        } else if(content === "Белый куб") {
+            card.innerHTML = "<span class='item-white'>⬜ Белый куб</span>"; showResult(true);
+        } else if(content === "Жаба") {
+            card.innerHTML = "<span class='item-frog'>🐸 Жаба</span>"; frogInPocket = index;
+            document.getElementById("log").innerHTML = "Жаба в кармане. Кликни по открытой пустой руке.";
+        } else if(content === "Палец-указатель") {
+            card.innerHTML = "<span class='item-finger'>🫵 Палец</span>"; activeScanner = true;
+        }
+    }
+
+    function generateHash(str) {
+        var hash = 0;
+        for (var i = 0; i < str.length; i++) {
+            hash = (hash << 5) - hash + str.charCodeAt(i);
+            hash |= 0;
+        }
+        return Math.abs(hash).toString(16);
+    }
+
+    function showResult(isWin) {
+        var banner = document.getElementById("result-banner");
+        banner.style.display = "block";
+        if(isWin) {
+            var tLetter = timeOfDay === "День" ? "D" : "N";
+            var salt = "Create27SecureSalt";
+            var rawData = handsCount + tLetter + salt;
+            var signature = generateHash(rawData);
+            var secretCode = "WH-" + handsCount + "-" + tLetter + "-" + signature;
+            
+            banner.className = "result-banner win-banner";
+            banner.innerHTML = "ПОБЕДА! Скопируй этот код анти-чит валидации: <br><div class='code-box'>" + secretCode + "</div>";
+        } else {
+            banner.className = "result-banner lose-banner"; banner.innerText = "ПРОИГРЫШ!";
+        }
+        var cards = document.getElementsByClassName("hand-card");
+        for(var i = 0; i < cards.length; i++) cards[i].onclick = null;
+    }
+</script>
+</body>
+</html>
