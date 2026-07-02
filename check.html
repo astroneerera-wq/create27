@@ -4,185 +4,174 @@
     <meta charset="UTF-8">
     <title>Склад и База Прокачки Драконидов</title>
     <style>
-        body { background-color: #111; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
-        h1 { color: #f39c12; margin-bottom: 5px; }
-        .main-layout { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .panel { background: #2c3e50; padding: 20px; border-radius: 10px; border: 2px solid #34495e; flex: 1; min-width: 320px; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        input { padding: 12px; width: 80%; border-radius: 5px; border: none; text-align: center; font-family: monospace; font-size: 18px; margin-bottom: 10px; background: #fff; color: #000; }
-        button { padding: 10px 20px; font-size: 16px; border-radius: 5px; border: none; background: #27ae60; color: #fff; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        button:hover { background: #2ecc71; }
-        
-        #dragons-lair { background: #1a252f; border: 2px dashed #e67e22; border-radius: 10px; padding: 15px; margin-top: 15px; text-align: left; }
-        .lair-title { font-weight: bold; color: #e67e22; margin-bottom: 10px; text-transform: uppercase; font-size: 14px; display: flex; justify-content: space-between; }
-        .dragon-status { background: #111; padding: 10px; border-radius: 5px; margin-bottom: 8px; font-size: 15px; border-left: 4px solid #f39c12; height: 20px; line-height: 20px; }
-        .item-text { font-weight: bold; }
-        .lvl-badge { float: right; background: #e67e22; color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold; height: 16px; line-height: 16px; }
-        
-        #vault { background: #111; padding: 15px; border-radius: 8px; text-align: left; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-family: monospace; font-size: 15px; }
-        .vault-slot { background: #222; padding: 8px; border-radius: 4px; border: 1px solid #333; display: flex; justify-content: space-between; }
-        .qty { color: #00eeee; font-weight: bold; }
-        #output { margin-top: 15px; padding: 15px; border-radius: 5px; font-size: 16px; text-align: left; display: none; line-height: 1.4; border: 1px solid #2ecc71; background: rgba(46, 204, 113, 0.1); }
+        body{background:#111;color:#fff;font-family:sans-serif;text-align:center;padding:20px;margin:0;}
+        h1{color:#f39c12;margin-bottom:5px;}
+        .main-layout{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;max-width:1200px;margin:0 auto;}
+        .panel{background:#2c3e50;padding:20px;border-radius:10px;border:2px solid #34495e;flex:1;min-width:320px;max-width:500px;box-shadow:0 4px 15px rgba(0,0,0,0.5);}
+        input{padding:12px;width:80%;border-radius:5px;border:none;text-align:center;font-family:monospace;font-size:18px;margin-bottom:10px;background:#fff;color:#000;}
+        button{padding:10px 20px;font-size:16px;border-radius:5px;border:none;background:#27ae60;color:#fff;font-weight:bold;cursor:pointer;transition:0.2s;}
+        button:hover{background:#2ecc71;}
+        #dragons-lair{background:#1a252f;border:2px dashed #e67e22;border-radius:10px;padding:15px;margin-top:15px;text-align:left;}
+        .lair-title{font-weight:bold;color:#e67e22;margin-bottom:10px;text-transform:uppercase;font-size:14px;display:flex;justify-content:space-between;}
+        .dragon-status{background:#111;padding:10px;border-radius:5px;margin-bottom:8px;font-size:15px;border-left:4px solid #f39c12;height:20px;line-height:20px;}
+        .item-text{font-weight:bold;}
+        .lvl-badge{float:right;background:#e67e22;color:#fff;padding:2px 6px;border-radius:3px;font-size:11px;font-weight:bold;height:16px;line-height:16px;}
+        #vault{background:#111;padding:15px;border-radius:8px;text-align:left;display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:monospace;font-size:15px;}
+        .vault-slot{background:#222;padding:8px;border-radius:4px;border:1px solid #333;display:flex;justify-content:space-between;}
+        .qty{color:#00eeee;font-weight:bold;}
+        #output{margin-top:15px;padding:15px;border-radius:5px;font-size:16px;text-align:left;display:none;line-height:1.4;border:1px solid #2ecc71;background:rgba(46,204,113,0.1);}
+        .flower-box{margin-top:15px;border-top:2px solid #e67e22;padding-top:10px;}
+        .flower-row{display:flex;justify-content:space-between;align-items:center;}
+        #flower-status{padding:5px 12px;border-radius:20px;background:#2ecc71;color:#fff;font-weight:bold;font-size:14px;}
     </style>
 </head>
 <body>
-
     <h1>🤖 Склад и База Прокачки «Create 27»</h1>
-    <p style="color: #bbb; margin-top: 0;">Уровни драконидов растут с каждым честным кодом!</p>
-
+    <p style="color:#bbb;margin-top:0;">Уровни драконидов растут с каждым честным кодом!</p>
     <div class="main-layout">
-        <!-- Левая панель -->
         <div class="panel">
             <h3>🔑 Ввод анти-чит шифра</h3>
             <input type="text" id="code-input" placeholder="Вставь код победы..."><br>
             <button onclick="validateAndDeposit()">Передать дракончикам</button>
             <div id="output"></div>
-            
             <div id="dragons-lair">
                 <div class="lair-title">⛺ Лавовый Вигвам и Новые Статусы</div>
-                
-                <div class="dragon-status" style="border-color: #f1c40f;">
-                    💤 <span class="item-text" style="color:#f1c40f;">Блок:</span> 
-                    <span id="lvl-brat" class="lvl-badge">LVL 1</span>
-                </div>
-                
-                <div class="dragon-status" style="border-color: #2ecc71;">
-                    ⚡ <span class="item-text" style="color:#2ecc71;">Аура:</span> 
-                    <span id="lvl-sestra" class="lvl-badge">LVL 1</span>
-                </div>
-                
-                <div class="dragon-status" style="border-color: #00eeee;">
-                    ❄️ <span class="item-text" style="color:#00eeee;">Приёмыш:</span> 
-                    <span id="lvl-prium" class="lvl-badge">LVL 1</span>
-                </div>
-                
-                <div class="dragon-status" style="border-color: #9b59b6;">
-                    🌸 <span class="item-text" style="color:#9b59b6;">Мелкая:</span> 
-                    <span id="lvl-melkaya" class="lvl-badge">LVL 1</span>
+                <div class="dragon-status" style="border-color:#f1c40f;">💤 <span class="item-text" style="color:#f1c40f;">Блок (отец):</span> <span id="lvl-brat" class="lvl-badge">LVL 2</span></div>
+                <div class="dragon-status" style="border-color:#2ecc71;">⚡ <span class="item-text" style="color:#2ecc71;">Аура (мама):</span> <span id="lvl-sestra" class="lvl-badge">LVL 2</span></div>
+                <div class="dragon-status" style="border-color:#00eeee;">❄️ <span class="item-text" style="color:#00eeee;">Приёмыш:</span> <span id="lvl-prium" class="lvl-badge">LVL 2</span></div>
+                <div class="dragon-status" style="border-color:#9b59b6;">🌸 <span class="item-text" style="color:#9b59b6;">Мелкая:</span> <span id="lvl-melkaya" class="lvl-badge">LVL 2</span></div>
+                <div class="dragon-status" style="border-color:#e67e22;">🌟 <span class="item-text" style="color:#e67e22;">Серебрянка:</span> <span id="lvl-silver" class="lvl-badge">LVL 1</span></div>
+                <div class="dragon-status" style="border-color:#ff5733;">🔥 <span class="item-text" style="color:#ff5733;">Коч Братан:</span> <span id="lvl-coalBrat" class="lvl-badge">LVL 1</span></div>
+                <div class="flower-box">
+                    <div class="flower-row">
+                        <span style="color:#f39c12;font-weight:bold;">🌺 Цветок-Лоно:</span>
+                        <span id="flower-status">🔥 СИЯЕТ</span>
+                    </div>
+                    <div style="font-size:12px;color:#888;margin-top:5px;">⚙️ Реагирует на склад и сок малышей</div>
                 </div>
             </div>
         </div>
-
-        <!-- Правая панель -->
         <div class="panel">
             <h3>📦 Королевская Сокровищница</h3>
             <div id="vault">
-                <div class="vault-slot"><span>💎 Алмазы:</span> <span class="qty" id="v-diamonds">2</span></div>
-                <div class="vault-slot"><span>💚 Изумруды:</span> <span class="qty" id="v-emeralds">2</span></div>
-                <div class="vault-slot"><span>⚙️ Миксеры (Mixer):</span> <span class="qty" id="v-mixers">1</span></div>
-                <div class="vault-slot"><span>⚙️ Помпы (Pump):</span> <span class="qty" id="v-pumps">1</span></div>
-                <div class="vault-slot"><span>⚙️ Поршни (Piston):</span> <span class="qty" id="v-pistons">0</span></div>
-                <div class="vault-slot"><span>⚙️ Жел. листы (Sheet):</span> <span class="qty" id="v-sheets">2</span></div>
-                <div class="vault-slot"><span>⚙️ Валы (Shaft):</span> <span class="qty" id="v-shafts">2</span></div>
+                <div class="vault-slot"><span>💎 Алмазы:</span> <span class="qty" id="v-diamonds">4</span></div>
+                <div class="vault-slot"><span>💚 Изумруды:</span> <span class="qty" id="v-emeralds">3</span></div>
+                <div class="vault-slot"><span>⚙️ Миксеры:</span> <span class="qty" id="v-mixers">2</span></div>
+                <div class="vault-slot"><span>⚙️ Помпы:</span> <span class="qty" id="v-pumps">2</span></div>
+                <div class="vault-slot"><span>⚙️ Поршни:</span> <span class="qty" id="v-pistons">1</span></div>
+                <div class="vault-slot"><span>⚙️ Жел. листы:</span> <span class="qty" id="v-sheets">6</span></div>
+                <div class="vault-slot"><span>⚙️ Валы:</span> <span class="qty" id="v-shafts">6</span></div>
                 <div class="vault-slot"><span>⚙️ Бол. шестерни:</span> <span class="qty" id="v-cogs">2</span></div>
                 <div class="vault-slot"><span>🪣 Ведро воды:</span> <span class="qty" id="v-water">1</span></div>
-                <div class="vault-slot"><span>⬛ Уголь:</span> <span class="qty" id="v-coal">28</span></div>
+                <div class="vault-slot"><span>⬛ Уголь:</span> <span class="qty" id="v-coal">44</span></div>
             </div>
-            <button style="margin-top:20px; background:#c0392b;" onclick="resetVault()">Сбросить склад</button>
+            <button style="margin-top:20px;background:#c0392b;" onclick="resetVault()">Сбросить склад</button>
         </div>
     </div>
-
-<script>
-    var vault = { diamonds: 2, emeralds: 2, mixers: 1, pumps: 1, pistons: 0, sheets: 2, shafts: 2, cogs: 2, water: 1, coal: 28 };
-    var levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };
-
-    if(localStorage.getItem("create27_vault")) { 
-        vault = JSON.parse(localStorage.getItem("create27_vault")); 
-    }
-    if(localStorage.getItem("create27_levels")) { 
-        levels = JSON.parse(localStorage.getItem("create27_levels")); 
-    }
-    
+    <script>
+    var vault={diamonds:4,emeralds:3,mixers:2,pumps:2,pistons:1,sheets:6,shafts:6,cogs:2,water:1,coal:44};
+    var levels={brat:2,sestra:2,prium:2,melkaya:2,silver:1,coalBrat:1};
+    if(localStorage.getItem("create27_vault")){vault=JSON.parse(localStorage.getItem("create27_vault"));}
+    if(localStorage.getItem("create27_levels")){levels=JSON.parse(localStorage.getItem("create27_levels"));}
     updateVaultUI();
-
-    function generateHash(str) {
-        var hash = 0; 
-        for (var i = 0; i < str.length; i++) { 
-            hash = (hash << 5) - hash + str.charCodeAt(i); 
-            hash |= 0; 
+    function generateHash(str){
+        var hash=0;
+        for(var i=0;i<str.length;i++){
+            hash=(hash<<5)-hash+str.charCodeAt(i);
+            hash|=0;
         }
         return Math.abs(hash).toString(16);
     }
-
-    function updateVaultUI() {
-        document.getElementById("v-diamonds").innerText = vault.diamonds;
-        document.getElementById("v-emeralds").innerText = vault.emeralds;
-        document.getElementById("v-mixers").innerText = vault.mixers;
-        document.getElementById("v-pumps").innerText = vault.pumps;
-        document.getElementById("v-pistons").innerText = vault.pistons;
-        document.getElementById("v-sheets").innerText = vault.sheets;
-        document.getElementById("v-shafts").innerText = vault.shafts;
-        document.getElementById("v-cogs").innerText = vault.cogs;
-        document.getElementById("v-water").innerText = vault.water;
-        document.getElementById("v-coal").innerText = vault.coal;
-        
-        document.getElementById("lvl-brat").innerText = "LVL " + levels.brat;
-        document.getElementById("lvl-sestra").innerText = "LVL " + levels.sestra;
-        document.getElementById("lvl-prium").innerText = "LVL " + levels.prium;
-        document.getElementById("lvl-melkaya").innerText = "LVL " + levels.melkaya;
-
-        localStorage.setItem("create27_vault", JSON.stringify(vault));
-        localStorage.setItem("create27_levels", JSON.stringify(levels));
+    function updateFlowerStatus(){
+        var flower=document.getElementById("flower-status");
+        var total=vault.diamonds+vault.emeralds+vault.mixers+vault.pumps+vault.pistons;
+        if(total<5){
+            flower.innerText="💀 УВЯДАЕТ (ЧП)";
+            flower.style.background="#e74c3c";
+        }else if(levels.silver>=2&&levels.coalBrat>=2){
+            flower.innerText="🔵 СИЯЕТ СИНИМ (СОК)";
+            flower.style.background="#3498db";
+        }else{
+            flower.innerText="🟠 ТЛЕЕТ (ЖДЁТ)";
+            flower.style.background="#f39c12";
+        }
     }
-
-    function validateAndDeposit() {
-        var code = document.getElementById("code-input").value.trim().toUpperCase();
-        var out = document.getElementById("output");
-        out.style.display = "block";
-
-        var parts = code.split("-");
-        if (parts.length !== 4 || parts[0] !== "WH") {
-            out.innerHTML = "<span style='color:#e74c3c;'>❌ Код неверный!</span>"; 
+    function updateVaultUI(){
+        document.getElementById("v-diamonds").innerText=vault.diamonds;
+        document.getElementById("v-emeralds").innerText=vault.emeralds;
+        document.getElementById("v-mixers").innerText=vault.mixers;
+        document.getElementById("v-pumps").innerText=vault.pumps;
+        document.getElementById("v-pistons").innerText=vault.pistons;
+        document.getElementById("v-sheets").innerText=vault.sheets;
+        document.getElementById("v-shafts").innerText=vault.shafts;
+        document.getElementById("v-cogs").innerText=vault.cogs;
+        document.getElementById("v-water").innerText=vault.water;
+        document.getElementById("v-coal").innerText=vault.coal;
+        document.getElementById("lvl-brat").innerText="LVL "+levels.brat;
+        document.getElementById("lvl-sestra").innerText="LVL "+levels.sestra;
+        document.getElementById("lvl-prium").innerText="LVL "+levels.prium;
+        document.getElementById("lvl-melkaya").innerText="LVL "+levels.melkaya;
+        document.getElementById("lvl-silver").innerText="LVL "+levels.silver;
+        document.getElementById("lvl-coalBrat").innerText="LVL "+levels.coalBrat;
+        updateFlowerStatus();
+        localStorage.setItem("create27_vault",JSON.stringify(vault));
+        localStorage.setItem("create27_levels",JSON.stringify(levels));
+    }
+    function validateAndDeposit(){
+        var code=document.getElementById("code-input").value.trim().toUpperCase();
+        var out=document.getElementById("output");
+        out.style.display="block";
+        var parts=code.split("-");
+        if(parts.length!==4||parts[0]!=="WH"){
+            out.innerHTML="<span style='color:#e74c3c;'>❌ Код неверный!</span>";
             return;
         }
-
-        var hands = parseInt(parts[1]); 
-        var timeLetter = parts[2]; 
-        var clientHash = parts[3];
-        var salt = "Create27SecureSalt";
-        var serverHash = generateHash(hands + timeLetter + salt).toUpperCase();
-
-        if (clientHash !== serverHash) {
-            out.innerHTML = "<span style='color:#e74c3c;'>❌ Обман: хэш не совпал!</span>"; 
+        var hands=parseInt(parts[1]);
+        var timeLetter=parts[2];
+        var clientHash=parts[3];
+        var serverHash=generateHash(hands+timeLetter+"Create27SecureSalt").toUpperCase();
+        if(clientHash!==serverHash){
+            out.innerHTML="<span style='color:#e74c3c;'>❌ Обман: хэш не совпал!</span>";
             return;
         }
-
-        var addLog = "";
-        if (hands === 50) {
-            vault.diamonds += 1; vault.emeralds += 1; vault.pumps += 1;
-            levels.prium += 1; levels.melkaya += 1;
-            addLog = "💎 +1 Алмаз, 💚 +1 Изумруд, ⚙️ +1 Помпа.";
-        } else if (hands >= 40) {
-            vault.diamonds += 1; vault.mixers += 1;
-            levels.sestra += 1;
-            addLog = "💎 +1 Алмаз, ⚙️ +1 Миксер.";
-        } else if (hands >= 30) {
-            vault.pistons += 1;
-            levels.brat += 1;
-            addLog = "⚙️ +1 Поршень.";
-        } else if (hands >= 15) {
-            vault.sheets += 2; vault.shafts += 2;
-            addLog = "⚙️ +2 Листа, ⚙️ +2 Вала.";
-        } else {
-            vault.coal += 8;
-            addLog = "⬛ +8 Unля.";
+        var addLog="";
+        var lvlUp="";
+        if(hands===50){
+            vault.diamonds+=1;vault.emeralds+=1;vault.pumps+=1;
+            levels.prium+=1;levels.melkaya+=1;
+            levels.silver+=1;levels.coalBrat+=1;
+            addLog="💎 +1 Алмаз, 💚 +1 Изумруд, ⚙️ +1 Помпа";
+            lvlUp="🌟 Серебрянка и Коч +1 LVL! (она жива и под штанами)";
+        }else if(hands>=40){
+            vault.diamonds+=1;vault.mixers+=1;
+            levels.sestra+=1;
+            addLog="💎 +1 Алмаз, ⚙️ +1 Миксер";
+        }else if(hands>=30){
+            vault.pistons+=1;
+            levels.brat+=1;
+            addLog="⚙️ +1 Поршень";
+        }else if(hands>=15){
+            vault.sheets+=2;vault.shafts+=2;
+            addLog="⚙️ +2 Листа, ⚙️ +2 Вала";
+        }else{
+            vault.coal+=8;
+            addLog="⬛ +8 Угля";
         }
-
         updateVaultUI();
-        var timeText = (timeLetter === "D") ? "День ☀️" : "Ночь 🌙";
-        out.innerHTML = "<b>✅ КОД ПОДТВЕРЖДЁН!</b><br>" +
-                        "Сложность: " + hands + " рук (" + timeText + ")<br>" +
-                        "📦 Утащили на склад:<br>" +
-                        "<span style='color:#f39c12;'>" + addLog + "</span>";
-        document.getElementById("code-input").value = "";
+        var timeText=(timeLetter==="D")?"День ☀️":"Ночь 🌙";
+        out.innerHTML="<b>✅ КОД ПОДТВЕРЖДЁН!</b><br>"+
+                      "Сложность: "+hands+" рук ("+timeText+")<br>"+
+                      "📦 + "+addLog+
+                      (lvlUp?"<br>🔥 "+lvlUp:"");
+        document.getElementById("code-input").value="";
     }
-
-    function resetVault() {
-        if(confirm("Сбросить склад и уровни?")) {
-            vault = { diamonds: 0, emeralds: 0, mixers: 0, pumps: 0, pistons: 0, sheets: 0, shafts: 0, cogs: 0, water: 0, coal: 0 };
-            levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };
+    function resetVault(){
+        if(confirm("Сбросить склад и уровни?")){
+            vault={diamonds:4,emeralds:3,mixers:2,pumps:2,pistons:1,sheets:6,shafts:6,cogs:2,water:1,coal:44};
+            levels={brat:2,sestra:2,prium:2,melkaya:2,silver:1,coalBrat:1};
             updateVaultUI();
         }
     }
-</script>
+    </script>
 </body>
 </html>
