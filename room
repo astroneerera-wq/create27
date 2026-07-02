@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Комната Наблюдения: Маленькие Дракониды</title>
+    <style>
+        body { background-color: #111; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
+        h1 { color: #e84393; margin-bottom: 5px; }
+        .nav-link { display: inline-block; background: #9b59b6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-bottom: 20px; transition: 0.2s; }
+        .nav-link:hover { background: #8e44ad; box-shadow: 0 0 10px #9b59b6; }
+        .room-layout { display: flex; flex-direction: column; align-items: center; gap: 20px; max-width: 600px; margin: 0 auto; }
+        .monitor { background: #2c3e50; border: 4px solid #34495e; border-radius: 10px; width: 100%; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); box-sizing: border-box; }
+        .cam-title { font-weight: bold; color: #ff7675; text-transform: uppercase; font-size: 14px; margin-bottom: 15px; letter-spacing: 1px; }
+        .screen { background: #111; border: 2px solid #1a252f; border-radius: 5px; padding: 15px; min-height: 80px; display: flex; align-items: center; justify-content: center; font-size: 15px; line-height: 1.4; text-align: left; }
+        button { padding: 12px 24px; font-size: 15px; border-radius: 5px; border: none; background: #e67e22; color: #fff; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 15px; }
+        button:hover { background: #d35400; box-shadow: 0 0 10px #e67e22; }
+    </style>
+</head>
+<body>
+
+    <a href="https://github.io" class="nav-link">🎮 ПЕРЕЙТИ К ИГРЕ WHICH HAND</a>
+
+    <h1>📺 Био-Мониторинг: Комната Малышей</h1>
+    <p style="color: #bbb; margin-top: 0;">Отслеживание активности Серебрянки и Коча Братана в реальном времени</p>
+
+    <div class="room-layout">
+        <!-- Камера 1: Серебрянка -->
+        <div class="monitor">
+            <div class="cam-title">🎥 КАМЕРА_01: СЕРЕБРЯНКА (ДЕТЁНЫШ-ГУМАНОИД)</div>
+            <div class="screen" id="cam-silver">Загрузка данных био-сканера...</div>
+        </div>
+
+        <!-- Камера 2: Коч Братан -->
+        <div class="monitor">
+            <div class="cam-title">🎥 КАМЕРА_02: КОЧ БРАТАН (ЛАВОВЫЙ БОГАТЫРЬ)</div>
+            <div class="screen" id="cam-koch">Загрузка данных термо-датчиков...</div>
+        </div>
+
+        <button onclick="refreshCameras()">Обновить камеры слежения</button>
+    </div>
+
+<script>
+    var statusesSilver = [
+        "👼 Серебрянка сидит на попе под Цветком-Лоном и с удивлением рассматривает свои эльфийские пальчики.",
+        "💤 Серебрянка свернулась маленьким серебристым клубочком у ног Мелкой и сладко сопит.",
+        "👀 Серебрянка испуганно пискнула от пристального техосмотра Приёмыша и быстро спряталась за брата.",
+        "✨ Серебрянка пытается поймать ручками медленные серебряные искорки пара, летящие от инкубатора."
+    ];
+
+    var statusesKoch = [
+        "💪 Коч Братан уселся прямо на кучу из 44 угля, надул пухлые ручки и грозно гукает: 'Гу-у... коч!'",
+        "🌋 Коч Братан разжег свой редстоуновый ирокез на максимум и пытается бороться с хвостом Блока.",
+        "🛡️ Коч Братан выставил широкую спину и надёжно закрыл собой Серебрянку от драконьего консилиума.",
+        "⬛ Коч Братан строит маленькие башенки из кусочков угля, удивленно разглядывая механизмы Create."
+    ];
+
+    function refreshCameras() {
+        var randSilver = statusesSilver[Math.floor(Math.random() * statusesSilver.length)];
+        var randKoch = statusesKoch[Math.floor(Math.random() * statusesKoch.length)];
+        
+        document.getElementById("cam-silver").innerHTML = randSilver;
+        document.getElementById("cam-koch").innerHTML = randKoch;
+    }
+
+    // Первоначальный запуск при открытии сайта
+    refreshCameras();
+</script>
+</body>
+</html>
