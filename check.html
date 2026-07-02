@@ -177,12 +177,15 @@
         }
 
         updateVaultUI();
-        var timeText = timeLetter === "D" ? "День ☀️" : "Ночь 🌙";
-out.innerHTML = "✅ <b>КОД ПОДТВЕРЖДЁН!</b><br>" +
-                "Сложность: " + hands + " рук (" + timeText + ")<br>" +
-                "📦 Дракончики утащили на склад:<br>" +
-                "<span style='color:#f39c12;'>" + addLog + "</span>";
-document.getElementById("code-input").value = "";
+                var timeText = (timeLetter === "D") ? "День ☀️" : "Ночь 🌙";
+        out.innerHTML = "<b>✅ КОД ПОДТВЕРЖДЁН!</b><br>" +
+                        "Сложность: " + hands + " рук (" + timeText + ")<br>" +
+                        "📦 Дракончики утащили на склад:<br>" +
+                        "<span style='color:#f39c12;'>" + addLog + "</span>";
+        document.getElementById("code-input").value = "";
+    } else {
+        out.innerHTML = "<span style='color:#e74c3c;'>❌ Ошибка кода!</span>";
+    }
 }
 
 function resetVault() {
