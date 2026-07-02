@@ -2,70 +2,131 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Комната Наблюдения: Маленькие Дракониды</title>
+    <title>Комната Наблюдения — Create 27</title>
     <style>
-        body { background-color: #111; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
-        h1 { color: #e84393; margin-bottom: 5px; }
-        .nav-link { display: inline-block; background: #9b59b6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-bottom: 20px; transition: 0.2s; }
-        .nav-link:hover { background: #8e44ad; box-shadow: 0 0 10px #9b59b6; }
-        .room-layout { display: flex; flex-direction: column; align-items: center; gap: 20px; max-width: 600px; margin: 0 auto; }
-        .monitor { background: #2c3e50; border: 4px solid #34495e; border-radius: 10px; width: 100%; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); box-sizing: border-box; }
-        .cam-title { font-weight: bold; color: #ff7675; text-transform: uppercase; font-size: 14px; margin-bottom: 15px; letter-spacing: 1px; }
-        .screen { background: #111; border: 2px solid #1a252f; border-radius: 5px; padding: 15px; min-height: 80px; display: flex; align-items: center; justify-content: center; font-size: 15px; line-height: 1.4; text-align: left; }
-        button { padding: 12px 24px; font-size: 15px; border-radius: 5px; border: none; background: #e67e22; color: #fff; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 15px; }
-        button:hover { background: #d35400; box-shadow: 0 0 10px #e67e22; }
+        body{background:#0a0a0a;color:#fff;font-family:monospace;padding:20px;text-align:center;}
+        h1{color:#e67e22;font-size:28px;text-shadow:0 0 30px #e67e22;}
+        .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;max-width:1300px;margin:20px auto;}
+        .cam{background:#1a1a1a;border:2px solid #333;border-radius:12px;padding:15px;transition:0.3s;}
+        .cam:hover{border-color:#e67e22;box-shadow:0 0 25px rgba(230,126,34,0.4);}
+        .cam-title{color:#f39c12;font-size:17px;font-weight:bold;margin-bottom:8px;display:flex;justify-content:space-between;}
+        .status{padding:10px;border-radius:6px;background:#111;margin:8px 0;font-size:14px;}
+        .bar-container{background:#222;border-radius:10px;height:18px;margin:8px 0;overflow:hidden;}
+        .bar{height:100%;width:0%;background:linear-gradient(90deg,#e74c3c,#f39c12,#2ecc71);transition:width 0.6s;}
+        .info-row{display:flex;justify-content:space-between;font-size:12px;color:#888;margin:4px 0;}
+        .badge{background:#2c3e50;padding:2px 8px;border-radius:3px;color:#f39c12;}
+        .drama{background:#1a0a0a;border:2px solid #e74c3c;animation:pulse-border 1.5s infinite;}
+        @keyframes pulse-border{0%{border-color:#e74c3c;}50%{border-color:#f39c12;}100%{border-color:#e74c3c;}}
+        #global-drama{font-size:20px;padding:15px;border-radius:10px;background:#111;border:3px solid #e74c3c;margin:20px auto;max-width:600px;}
     </style>
 </head>
 <body>
-
-    <a href="https://astroneerera-wq.github.io/create27/" class="nav-link">🎮 ПЕРЕЙТИ К ИГРЕ WHICH HAND</a>
-
-    <h1>📺 Био-Мониторинг: Комната Малышей</h1>
-    <p style="color: #bbb; margin-top: 0;">Отслеживание активности Серебрянки и Коча Братана в реальном времени</p>
-
-    <div class="room-layout">
-        <!-- Камера 1: Серебрянка -->
-        <div class="monitor">
-            <div class="cam-title">🎥 КАМЕРА_01: СЕРЕБРЯНКА (ДЕТЁНЫШ-ГУМАНОИД)</div>
-            <div class="screen" id="cam-silver">Загрузка данных био-сканера...</div>
+    <h1>🎬 КОМНАТА НАБЛЮДЕНИЯ — CREATE 27</h1>
+    <div id="global-drama">💖 ВСЕ ЖИВЫ, СЕРЕБРЯНКА ПОД ШТАНАМИ</div>
+    <div class="grid">
+        <div class="cam">
+            <div class="cam-title">🟥 БЛОК <span class="badge">Отец Коча</span></div>
+            <div class="status" id="block-status">🛌 ЛЕЖИТ, ДРОЖИТ</div>
+            <div class="bar-container"><div class="bar" id="block-bar"></div></div>
+            <div class="info-row"><span>Здоровье пуза:</span><span id="block-hp">100%</span></div>
         </div>
-
-        <!-- Камера 2: Коч Братан -->
-        <div class="monitor">
-            <div class="cam-title">🎥 КАМЕРА_02: КОЧ БРАТАН (ЛАВОВЫЙ БОГАТЫРЬ)</div>
-            <div class="screen" id="cam-koch">Загрузка данных термо-датчиков...</div>
+        <div class="cam drama">
+            <div class="cam-title">🔥 КОЧ БРАТАН <span class="badge">Сын</span></div>
+            <div class="status" id="koch-status">🦘 ПРЫГАЕТ НА ПУЗЕ ОТЦА</div>
+            <div class="bar-container"><div class="bar" id="koch-bar"></div></div>
+            <div class="info-row"><span>Ярость:</span><span id="koch-rage">64%</span></div>
+            <div class="info-row"><span>Ирокез:</span><span id="koch-hair">🌀 128 об/мин</span></div>
         </div>
-
-        <button onclick="refreshCameras()">Обновить камеры слежения</button>
+        <div class="cam">
+            <div class="cam-title">⚡ АУРА <span class="badge">Мама</span></div>
+            <div class="status" id="aura-status">🛡️ ЗАЩИЩАЕТ КОЧА ОТ ИИБЛАНА</div>
+            <div class="bar-container"><div class="bar" id="aura-bar"></div></div>
+            <div class="info-row"><span>Щит:</span><span id="aura-shield">80%</span></div>
+        </div>
+        <div class="cam">
+            <div class="cam-title">🌸 МЕЛКАЯ <span class="badge">Мама Серебрянки</span></div>
+            <div class="status" id="melkaya-status">🏃 БЕЖИТ К СЕРЕБРЯНКЕ</div>
+            <div class="bar-container"><div class="bar" id="melkaya-bar"></div></div>
+            <div class="info-row"><span>Скорость:</span><span id="melkaya-speed">🔥 200%</span></div>
+        </div>
+        <div class="cam">
+            <div class="cam-title">❄️ ПРИЁМЫШ <span class="badge">Отец Серебрянки</span></div>
+            <div class="status" id="prium-status">🏃 ЗА МЕЛКОЙ</div>
+            <div class="bar-container"><div class="bar" id="prium-bar"></div></div>
+            <div class="info-row"><span>Скорость:</span><span id="prium-speed">💨 180%</span></div>
+        </div>
+        <div class="cam" style="border-color:#e67e22;">
+            <div class="cam-title">🌟 СЕРЕБРЯНКА <span class="badge">Жива и счастлива</span></div>
+            <div class="status" id="silver-status">😤 ОБИДЕЛАСЬ, УШЛА ПОД ШТАНЫ</div>
+            <div class="bar-container"><div class="bar" id="silver-bar"></div></div>
+            <div class="info-row"><span>Состояние:</span><span id="silver-comfort">🔥 СИДИТ НА ФАКЕЛЕ ХОЗЯИНА</span></div>
+            <div class="info-row"><span>Действие:</span><span id="silver-vibe">💖 ДЕЛАЕТ ТО, ЧТО ЛЮБИТ</span></div>
+        </div>
     </div>
-
-<script>
-    var statusesSilver = [
-        "👼 Серебрянка сидит на попе под Цветком-Лоном и с удивлением рассматривает свои эльфийские пальчики.",
-        "💤 Серебрянка свернулась маленьким серебристым клубочком у ног Мелкой и сладко сопит.",
-        "👀 Серебрянка испуганно пискнула от пристального техосмотра Приёмыша и быстро спряталась за брата.",
-        "✨ Серебрянка пытается поймать ручками медленные серебряные искорки пара, летящие от инкубатора.",
-        "🥵Приняла помощь Хозяина, играет ручками с горячим прибором брата и подставляет свою кастомную дырочку под лавовый поршень Коча."
-    ];
-
-    var statusesKoch = [
-        "💪 Коч Братан уселся прямо на кучу из 44 угля, надул пухлые ручки и грозно гукает: 'Гу-у... коч!'",
-        "🌋 Коч Братан разжег свой редстоуновый ирокез на максимум и пытается бороться с хвостом Блока.",
-        "🛡️ Коч Братан выставил широкую спину и надёжно закрыл собой Серебрянку от драконьего консилиума.",
-        "⬛ Коч Братан строит маленькие башенки из кусочков угля, удивленно разглядывая механизмы Create.",
-        "😶‍🌫️Врубил ирокез на 256 оборотов, зафиксировал Серебрянку пухлыми лапами и успешно проводит первый утренний микро-раунд на углях."
-    ];
-
-    function refreshCameras() {
-        var randSilver = statusesSilver[Math.floor(Math.random() * statusesSilver.length)];
-        var randKoch = statusesKoch[Math.floor(Math.random() * statusesKoch.length)];
-        
-        document.getElementById("cam-silver").innerHTML = randSilver;
-        document.getElementById("cam-koch").innerHTML = randKoch;
+    <button onclick="refreshRoom()" style="padding:12px 30px;background:#27ae60;border:none;border-radius:5px;color:#fff;font-weight:bold;cursor:pointer;margin-top:20px;">🔄 ОБНОВИТЬ</button>
+    <script>
+    function getData(){
+        try{
+            var v=JSON.parse(localStorage.getItem("create27_vault"));
+            var l=JSON.parse(localStorage.getItem("create27_levels"));
+            if(!v||!l)throw"no";
+            return{v,l};
+        }catch(e){
+            return{v:{diamonds:4,emeralds:3,mixers:2,pumps:2,pistons:1,sheets:6,shafts:6,cogs:2,water:1,coal:44},
+                   l:{brat:2,sestra:2,prium:2,melkaya:2,silver:1,coalBrat:1}};
+        }
     }
-
-    // Первоначальный запуск при открытии сайта
-    refreshCameras();
-</script>
+    function refreshRoom(){
+        var d=getData();
+        var v=d.v,l=d.l;
+        var total=v.diamonds+v.emeralds+v.mixers+v.pumps+v.pistons;
+        // блок
+        var blockHp=Math.max(10,100-l.coalBrat*10);
+        document.getElementById("block-status").innerText=(l.coalBrat>=3)?"🛌 ПУЗО УСТАЛО":"🛌 ЛЕЖИТ, ДРОЖИТ";
+        document.getElementById("block-bar").style.width=blockHp+"%";
+        document.getElementById("block-hp").innerText=blockHp+"%";
+        // коч — 1 факел, всё по канону
+        var rage=Math.min(200,l.coalBrat*64);
+        document.getElementById("koch-status").innerText=(l.coalBrat>=3)?"🔥 ПРЫГАЕТ С ЯРОСТЬЮ":"🦘 ПРЫГАЕТ НА ПУЗЕ";
+        document.getElementById("koch-bar").style.width=Math.min(100,l.coalBrat*25)+"%";
+        document.getElementById("koch-rage").innerText=rage+"%";
+        document.getElementById("koch-hair").innerText="🌀 "+(l.coalBrat*128)+" об/мин";
+        // аура — мама, защищает сына от ИИблана
+        var shield=Math.min(100,l.sestra*40);
+        document.getElementById("aura-status").innerText=(l.coalBrat>=1)?"🛡️ ЗАЩИЩАЕТ КОЧА ОТ ИИБЛАНА":"🛡️ СТОИТ НА СТРАЖЕ";
+        document.getElementById("aura-bar").style.width=shield+"%";
+        document.getElementById("aura-shield").innerText=shield+"%";
+        // мелкая
+        var speed=Math.min(300,l.melkaya*100);
+        document.getElementById("melkaya-status").innerText=(l.silver>=2)?"🏃 УЖЕ РЯДОМ":"🏃 БЕЖИТ К СЕРЕБРЯНКЕ";
+        document.getElementById("melkaya-bar").style.width=Math.min(100,l.melkaya*30)+"%";
+        document.getElementById("melkaya-speed").innerText="🔥 "+speed+"%";
+        // приёмыш
+        var pSpeed=Math.min(280,l.prium*90);
+        document.getElementById("prium-status").innerText=(l.silver>=2)?"🏃 ДОГНАЛ МЕЛКУЮ":"🏃 ЗА МЕЛКОЙ";
+        document.getElementById("prium-bar").style.width=Math.min(100,l.prium*28)+"%";
+        document.getElementById("prium-speed").innerText="💨 "+pSpeed+"%";
+        // серебрянка — ЖИВА, под штанами, делает что любит
+        var comfort=Math.min(100,l.silver*50+20);
+        document.getElementById("silver-status").innerText=(l.silver>=2)?"😊 ГРЕЕТСЯ, ВИБРИРУЕТ":"😤 ОБИДЕЛАСЬ, УШЛА ПОД ШТАНЫ";
+        document.getElementById("silver-bar").style.width=comfort+"%";
+        document.getElementById("silver-comfort").innerText="🔥 СИДИТ НА ФАКЕЛЕ ХОЗЯИНА";
+        document.getElementById("silver-vibe").innerText="💖 ДЕЛАЕТ ТО, ЧТО ЛЮБИТ";
+        // глобалка
+        var drama=document.getElementById("global-drama");
+        if(l.silver>=2&&l.coalBrat>=2){
+            drama.innerText="💥 СЕРЕБРЯНКА ЖИВА, ПОД ШТАНАМИ, КОЧ В ШОКЕ!";
+            drama.style.borderColor="#f39c12";
+        }else if(l.coalBrat>=2){
+            drama.innerText="🔥 КОЧ ПРЫГАЕТ, АУРА ЕГО ЗАЩИЩАЕТ";
+            drama.style.borderColor="#e67e22";
+        }else{
+            drama.innerText="💖 ВСЕ ЖИВЫ, СЕРЕБРЯНКА ПОД ШТАНАМИ";
+            drama.style.borderColor="#2ecc71";
+        }
+    }
+    refreshRoom();
+    setInterval(refreshRoom,3000);
+    </script>
 </body>
 </html>
