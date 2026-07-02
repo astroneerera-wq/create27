@@ -46,9 +46,9 @@
                 </div>
                 
                 <div class="dragon-status" style="border-color: #2ecc71;">
-                    ⚡ <span class="item-text" style="color:#2ecc71;">Приёмная Сестра:</span> 
+                    ⚡ <span class="item-text" style="color:#2ecc71;">Родная Сестра:</span> 
                     <span id="lvl-sestra" class="lvl-badge">LVL 1</span>
-                    <br><span id="status-sestra">Тяжело дышит на пузе Блока, довольная жестоким вторым раундом.</span>
+                    <br><span id="status-sestra">Тяжело дышит на пузе Брата, довольная жестоким вторым раундом.</span>
                 </div>
                 
                 <div class="dragon-status" style="border-color: #00eeee;">
@@ -58,7 +58,7 @@
                 </div>
                 
                 <div class="dragon-status" style="border-color: #9b59b6;">
-                    🌸 <span class="item-text" style="color:#9b59b6;">Родная Сестра Мелкая:</span> 
+                    🌸 <span class="item-text" style="color:#9b59b6;">Приемная Сестра Мелкая:</span> 
                     <span id="lvl-melkaya" class="lvl-badge">LVL 1</span>
                     <br><span id="status-melkaya">Засияла серебром после заправки, вылизывает мордочку на углях.</span>
                 </div>
@@ -87,13 +87,21 @@
     var vault = { diamonds: 2, emeralds: 2, mixers: 1, pumps: 1, pistons: 0, sheets: 2, shafts: 2, cogs: 2, water: 1, coal: 28 };
     var levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };
 
-    if(localStorage.getItem("create27_vault")) { vault = JSON.parse(localStorage.getItem("create27_vault")); }
-    if(localStorage.getItem("create27_levels")) { levels = JSON.parse(localStorage.getItem("create27_levels")); }
+    if(localStorage.getItem("create27_vault")) { 
+        vault = JSON.parse(localStorage.getItem("create27_vault")); 
+    }
+    if(localStorage.getItem("create27_levels")) { 
+        levels = JSON.parse(localStorage.getItem("create27_levels")); 
+    }
     
     updateVaultUI();
 
     function generateHash(str) {
-        var hash = 0; for (var i = 0; i < str.length; i++) { hash = (hash << 5) - hash + str.charCodeAt(i); hash |= 0; }
+        var hash = 0; 
+        for (var i = 0; i < str.length; i++) { 
+            hash = (hash << 5) - hash + str.charCodeAt(i); 
+            hash |= 0; 
+        }
         return Math.abs(hash).toString(16);
     }
 
@@ -114,8 +122,12 @@
         document.getElementById("lvl-prium").innerText = "LVL " + levels.prium;
         document.getElementById("lvl-melkaya").innerText = "LVL " + levels.melkaya;
 
-        if(levels.prium >= 3) { document.getElementById("status-prium").innerText = "🔥 Стал Каменным Вожаком вигвама, серебряный факел искрит редстоуном."; }
-        if(levels.melkaya >= 3) { document.getElementById("status-melkaya").innerText = "👑 Полностью эволюционировала, её серебряные крылья светятся чистым неоном."; }
+        if(levels.prium >= 3) { 
+            document.getElementById("status-prium").innerText = "🔥 Стал Вожаком вигвама!"; 
+        }
+        if(levels.melkaya >= 3) { 
+            document.getElementById("status-melkaya").innerText = "👑 Её крылья светятся неоном."; 
+        }
 
         localStorage.setItem("create27_vault", JSON.stringify(vault));
         localStorage.setItem("create27_levels", JSON.stringify(levels));
@@ -128,30 +140,34 @@
 
         var parts = code.split("-");
         if (parts.length !== 4 || parts[0] !== "WH") {
-            out.innerHTML = "<span style='color:#e74c3c; font-weight:bold;'>❌ Ошибка: Код фейковый! Драконы недовольны.</span>"; return;
+            out.innerHTML = "<span style='color:#e74c3c;'>❌ Код неверный!</span>"; 
+            return;
         }
 
-        var hands = parseInt(parts[1]); var timeLetter = parts[2]; var clientHash = parts[3];
+        var hands = parseInt(parts[1]); 
+        var timeLetter = parts[2]; 
+        var clientHash = parts[3];
         var salt = "Create27SecureSalt";
         var serverHash = generateHash(hands + timeLetter + salt).toUpperCase();
 
         if (clientHash !== serverHash) {
-            out.innerHTML = "<span style='color:#e74c3c; font-weight:bold;'>❌ ОБНАРУЖЕН ОБМАН: Подпись взломана! Липецкие хакеры не пройдут.</span>"; return;
+            out.innerHTML = "<span style='color:#e74c3c;'>❌ Обман: хэш не совпал!</span>"; 
+            return;
         }
 
         var addLog = "";
         if (hands === 50) {
             vault.diamonds += 1; vault.emeralds += 1; vault.pumps += 1;
             levels.prium += 1; levels.melkaya += 1;
-            addLog = "💎 +1 Алмаз, 💚 +1 Изумруд, ⚙️ +1 Помпа. Серебряные апнули уровень!";
+            addLog = "💎 +1 Алмаз, 💚 +1 Изумруд, ⚙️ +1 Помпа.";
         } else if (hands >= 40) {
             vault.diamonds += 1; vault.mixers += 1;
             levels.sestra += 1;
-            addLog = "💎 +1 Алмаз, ⚙️ +1 Миксер. Приёмная Сестра апнула уровень!";
+            addLog = "💎 +1 Алмаз, ⚙️ +1 Миксер.";
         } else if (hands >= 30) {
             vault.pistons += 1;
             levels.brat += 1;
-            addLog = "⚙️ +1 Поршень. Брат Толстяк апнул уровень!";
+            addLog = "⚙️ +1 Поршень.";
         } else if (hands >= 15) {
             vault.sheets += 2; vault.shafts += 2;
             addLog = "⚙️ +2 Листа, ⚙️ +2 Вала.";
@@ -161,4 +177,18 @@
         }
 
         updateVaultUI();
-var timeText = timeLetter === "D" ? "День ☀️" : "Ночь 🌙";out.innerHTML = "✅ КОД ПОДТВЕРЖДЁН!Сложность: " + hands + " рук (" + timeText + ")📦 Дракончики утащили на склад:" + addLog + "";document.getElementById("code-input").value = "";}function resetVault() {if(confirm("Очистить склад и сбросить уровни драконидов?")) {vault = { diamonds: 0, emeralds: 0, mixers: 0, pumps: 0, pistons: 0, sheets: 0, shafts: 0, cogs: 0, water: 0, coal: 0 };levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };updateVaultUI();}}
+        var timeText = timeLetter === "D" ? "День ☀️" : "Ночь 🌙";
+out.innerHTML = "✅ <b>КОД ПОДТВЕРЖДЁН!</b><br>" +
+                "Сложность: " + hands + " рук (" + timeText + ")<br>" +
+                "📦 Дракончики утащили на склад:<br>" +
+                "<span style='color:#f39c12;'>" + addLog + "</span>";
+document.getElementById("code-input").value = "";
+}
+
+function resetVault() {
+    if(confirm("Сбросить склад и уровни?")) {
+        vault = { diamonds: 0, emeralds: 0, mixers: 0, pumps: 0, pistons: 0, sheets: 0, shafts: 0, cogs: 0, water: 0, coal: 0 };
+        levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };
+        updateVaultUI();
+    }
+}
