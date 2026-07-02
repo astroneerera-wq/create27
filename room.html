@@ -126,6 +126,22 @@
         }
     }
     refreshRoom();
+    // Серебрянка питает цветок
+var silverFeed = l.silver * 20 + 20; // чем выше LVL, тем больше сока
+document.getElementById("silver-status").innerText = (l.silver >= 2) ? 
+    "💖 ВПИТЫВАЕТ СОК ХОЗЯИНА, ПИТАЕТ ЦВЕТОК" : 
+    "😤 ОБИДЕЛАСЬ, НО ЦВЕТОК ЖДЁТ";
+document.getElementById("silver-bar").style.width = Math.min(100, silverFeed) + "%";
+document.getElementById("silver-comfort").innerText = "🌺 ЦВЕТОК ПОЛУЧАЕТ " + silverFeed + "% ПИТАНИЯ";
+document.getElementById("silver-vibe").innerText = (l.silver >= 2) ? "⚡ АКТИВНО" : "⏸️ ПАУЗА";
+
+// Цветок-Лоно зависит от Серебрянки
+var flowerHealth = Math.min(100, silverFeed + (vault.diamonds * 5));
+document.getElementById("flower-status").innerText = (flowerHealth >= 70) ? 
+    "🌺 РАСЦВЕЛ (СОК ЕСТЬ)" : 
+    "💀 УВЯДАЕТ (НУЖЕН СОК)";
+document.getElementById("flower-bar").style.width = flowerHealth + "%";
+document.getElementById("flower-desc").innerText = flowerHealth + "% здоровья";
     setInterval(refreshRoom,3000);
     </script>
 </body>
