@@ -11,13 +11,11 @@
         input { padding: 12px; width: 80%; border-radius: 5px; border: none; text-align: center; font-family: monospace; font-size: 18px; margin-bottom: 10px; background: #fff; color: #000; }
         button { padding: 10px 20px; font-size: 16px; border-radius: 5px; border: none; background: #27ae60; color: #fff; font-weight: bold; cursor: pointer; transition: 0.2s; }
         button:hover { background: #2ecc71; }
-        
         #dragons-lair { background: #1a252f; border: 2px dashed #e67e22; border-radius: 10px; padding: 15px; margin-top: 15px; text-align: left; }
         .lair-title { font-weight: bold; color: #e67e22; margin-bottom: 10px; text-transform: uppercase; font-size: 14px; display: flex; justify-content: space-between; }
         .dragon-status { background: #111; padding: 10px; border-radius: 5px; margin-bottom: 8px; font-size: 13px; border-left: 4px solid #f39c12; }
         .item-text { font-weight: bold; }
         .lvl-badge { float: right; background: #e67e22; color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold; }
-        
         #vault { background: #111; padding: 15px; border-radius: 8px; text-align: left; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-family: monospace; font-size: 15px; }
         .vault-slot { background: #222; padding: 8px; border-radius: 4px; border: 1px solid #333; display: flex; justify-content: space-between; }
         .qty { color: #00eeee; font-weight: bold; }
@@ -38,28 +36,20 @@
             
             <div id="dragons-lair">
                 <div class="lair-title">⛺ Лавовый Вигвам и Новые Статусы</div>
-                
                 <div class="dragon-status" style="border-color: #f1c40f;">
-                    💤 <span class="item-text" style="color:#f1c40f;">Брат Толстяк:</span> 
-                    <span id="lvl-brat" class="lvl-badge">LVL 1</span>
+                    💤 <span class="item-text" style="color:#f1c40f;">Брат Толстяк:</span> <span id="lvl-brat" class="lvl-badge">LVL 1</span>
                     <br><span id="status-brat">Блаженно дремлет на угле, его лавовый факел остывает после тройного привода.</span>
                 </div>
-                
                 <div class="dragon-status" style="border-color: #2ecc71;">
-                    ⚡ <span class="item-text" style="color:#2ecc71;">Родная Сестра:</span> 
-                    <span id="lvl-sestra" class="lvl-badge">LVL 1</span>
-                    <br><span id="status-sestra">Тяжело дышит на пузе Брата, довольная жестоким вторым раундом.</span>
+                    ⚡ <span class="item-text" style="color:#2ecc71;">Приёмная Сестра:</span> <span id="lvl-sestra" class="lvl-badge">LVL 1</span>
+                    <br><span id="status-sestra">Тяжело дышит на пузе Блока, довольная жестоким вторым раундом.</span>
                 </div>
-                
                 <div class="dragon-status" style="border-color: #00eeee;">
-                    ❄️ <span class="item-text" style="color:#00eeee;">Приёмыш Серебряный:</span> 
-                    <span id="lvl-prium" class="lvl-badge">LVL 1</span>
+                    ❄️ <span class="item-text" style="color:#00eeee;">Приёмыш Серебряный:</span> <span id="lvl-prium" class="lvl-badge">LVL 1</span>
                     <br><span id="status-prium">Гордится каменным факелом, заправил сестру жидким нектаром.</span>
                 </div>
-                
                 <div class="dragon-status" style="border-color: #9b59b6;">
-                    🌸 <span class="item-text" style="color:#9b59b6;">Приемная Сестра Мелкая:</span> 
-                    <span id="lvl-melkaya" class="lvl-badge">LVL 1</span>
+                    🌸 <span class="item-text" style="color:#9b59b6;">Родная Сестра Мелкая:</span> <span id="lvl-melkaya" class="lvl-badge">LVL 1</span>
                     <br><span id="status-melkaya">Засияла серебром после заправки, вылизывает мордочку на углях.</span>
                 </div>
             </div>
@@ -87,12 +77,8 @@
     var vault = { diamonds: 2, emeralds: 2, mixers: 1, pumps: 1, pistons: 0, sheets: 2, shafts: 2, cogs: 2, water: 1, coal: 28 };
     var levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };
 
-    if(localStorage.getItem("create27_vault")) { 
-        vault = JSON.parse(localStorage.getItem("create27_vault")); 
-    }
-    if(localStorage.getItem("create27_levels")) { 
-        levels = JSON.parse(localStorage.getItem("create27_levels")); 
-    }
+    if(localStorage.getItem("create27_vault")) { vault = JSON.parse(localStorage.getItem("create27_vault")); }
+    if(localStorage.getItem("create27_levels")) { levels = JSON.parse(localStorage.getItem("create27_levels")); }
     
     updateVaultUI();
 
@@ -122,12 +108,8 @@
         document.getElementById("lvl-prium").innerText = "LVL " + levels.prium;
         document.getElementById("lvl-melkaya").innerText = "LVL " + levels.melkaya;
 
-        if(levels.prium >= 3) { 
-            document.getElementById("status-prium").innerText = "🔥 Стал Вожаком вигвама!"; 
-        }
-        if(levels.melkaya >= 3) { 
-            document.getElementById("status-melkaya").innerText = "👑 Её крылья светятся неоном."; 
-        }
+        if(levels.prium >= 3) { document.getElementById("status-prium").innerText = "🔥 Стал Вожаком вигвама!"; }
+        if(levels.melkaya >= 3) { document.getElementById("status-melkaya").innerText = "👑 Её крылья светятся неоном."; }
 
         localStorage.setItem("create27_vault", JSON.stringify(vault));
         localStorage.setItem("create27_levels", JSON.stringify(levels));
@@ -178,20 +160,5 @@
 
         updateVaultUI();
         var timeText = (timeLetter === "D") ? "День ☀️" : "Ночь 🌙";
-        out.innerHTML = "<b>✅ КОД ПОДТВЕРЖДЁН!</b><br>" +
-                        "Сложность: " + hands + " рук (" + timeText + ")<br>" +
-                        "📦 Дракончики утащили на склад:<br>" +
-                        "<span style='color:#f39c12;'>" + addLog + "</span>";
-        document.getElementById("code-input").value = "";
-    } else {
-        out.innerHTML = "<span style='color:#e74c3c;'>❌ Ошибка кода!</span>";
-    }
-}
-
-function resetVault() {
-    if(confirm("Сбросить склад и уровни?")) {
-        vault = { diamonds: 0, emeralds: 0, mixers: 0, pumps: 0, pistons: 0, sheets: 0, shafts: 0, cogs: 0, water: 0, coal: 0 };
-        levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };
-        updateVaultUI();
-    }
-}
+        out.innerHTML = "<b>✅ КОД ПОДТВЕРЖДЁН!</b><br>Сложность: " + hands + " рук (" + timeText + ")<br>📦 Утащили на склад:<br><span style='color:#f39c12;'>" + addLog + "</span>";
+document.getElementById("code-input").value = "";}function resetVault() {if(confirm("Сбросить склад и уровни?")) {vault = { diamonds: 0, emeralds: 0, mixers: 0, pumps: 0, pistons: 0, sheets: 0, shafts: 0, cogs: 0, water: 0, coal: 0 };levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };updateVaultUI();}}
