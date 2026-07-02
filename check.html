@@ -6,8 +6,6 @@
     <style>
         body { background-color: #111; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
         h1 { color: #f39c12; margin-bottom: 5px; }
-        .nav-link { display: inline-block; background: #9b59b6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-bottom: 15px; transition: 0.2s; }
-        .nav-link:hover { background: #8e44ad; box-shadow: 0 0 10px #9b59b6; }
         .main-layout { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px; margin: 0 auto; }
         .panel { background: #2c3e50; padding: 20px; border-radius: 10px; border: 2px solid #34495e; flex: 1; min-width: 320px; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         input { padding: 12px; width: 80%; border-radius: 5px; border: none; text-align: center; font-family: monospace; font-size: 18px; margin-bottom: 10px; background: #fff; color: #000; }
@@ -27,8 +25,6 @@
     </style>
 </head>
 <body>
-
-    <a href="https://astroneerera-wq.github.io/create27 class="nav-link">🎮 ПЕРЕЙТИ К ИГРЕ WHICH HAND</a>
 
     <h1>🤖 Склад и База Прокачки «Create 27»</h1>
     <p style="color: #bbb; margin-top: 0;">Уровни драконидов растут с каждым честным кодом!</p>
@@ -153,4 +149,16 @@
             levels.sestra += 1;
             addLog = "💎 +1 Алмаз, ⚙️ +1 Миксер. Приёмная Сестра апнула уровень!";
         } else if (hands >= 30) {
-            vault.pistons += 1;levels.brat += 1;addLog = "⚙️ +1 Поршень. Брат Толстяк апнул уровень!";} else if (hands >= 15) {vault.sheets += 2; vault.shafts += 2;addLog = "⚙️ +2 Листа, ⚙️ +2 Вала.";} else {vault.coal += 8;addLog = "⬛ +8 Угля.";}updateVaultUI();var timeText = timeLetter === "D" ? "День ☀️" : "Ночь 🌙";out.innerHTML = "✅ КОД ПОДТВЕРЖДЁН!Сложность: " + hands + " рук (" + timeText + ")📦 Дракончики утащили на склад:" + addLog + "";document.getElementById("code-input").value = "";}function resetVault() {if(confirm("Очистить склад и сбросить уровни драконидов?")) {vault = { diamonds: 0, emeralds: 0, mixers: 0, pumps: 0, pistons: 0, sheets: 0, shafts: 0, cogs: 0, water: 0, coal: 0 };levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };updateVaultUI();}}
+            vault.pistons += 1;
+            levels.brat += 1;
+            addLog = "⚙️ +1 Поршень. Брат Толстяк апнул уровень!";
+        } else if (hands >= 15) {
+            vault.sheets += 2; vault.shafts += 2;
+            addLog = "⚙️ +2 Листа, ⚙️ +2 Вала.";
+        } else {
+            vault.coal += 8;
+            addLog = "⬛ +8 Угля.";
+        }
+
+        updateVaultUI();
+var timeText = timeLetter === "D" ? "День ☀️" : "Ночь 🌙";out.innerHTML = "✅ КОД ПОДТВЕРЖДЁН!Сложность: " + hands + " рук (" + timeText + ")📦 Дракончики утащили на склад:" + addLog + "";document.getElementById("code-input").value = "";}function resetVault() {if(confirm("Очистить склад и сбросить уровни драконидов?")) {vault = { diamonds: 0, emeralds: 0, mixers: 0, pumps: 0, pistons: 0, sheets: 0, shafts: 0, cogs: 0, water: 0, coal: 0 };levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };updateVaultUI();}}
