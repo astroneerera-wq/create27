@@ -28,13 +28,12 @@
 </head>
 <body>
 
-    <a href="https://astroneerera-wq.github.io/create27/check" class="nav-link">🎮 ПЕРЕЙТИ К ИГРЕ WHICH HAND</a>
+    <a href="https://astroneerera-wq.github.io/create27/" class="nav-link">🎮 ПЕРЕЙТИ К ИГРЕ WHICH HAND</a>
 
     <h1>🤖 Склад и База Прокачки «Create 27»</h1>
     <p style="color: #bbb; margin-top: 0;">Уровни драконидов растут с каждым честным кодом!</p>
 
     <div class="main-layout">
-        <!-- Левая панель -->
         <div class="panel">
             <h3>🔑 Ввод анти-чит шифра</h3>
             <input type="text" id="code-input" placeholder="Вставь код победы..."><br>
@@ -70,7 +69,6 @@
             </div>
         </div>
 
-        <!-- Правая панель -->
         <div class="panel">
             <h3>📦 Королевская Сокровищница</h3>
             <div id="vault">
@@ -120,7 +118,6 @@
         document.getElementById("lvl-prium").innerText = "LVL " + levels.prium;
         document.getElementById("lvl-melkaya").innerText = "LVL " + levels.melkaya;
 
-        // Эволюция описаний в зависимости от уровня
         if(levels.prium >= 3) { document.getElementById("status-prium").innerText = "🔥 Стал Каменным Вожаком вигвама, серебряный факел искрит редстоуном."; }
         if(levels.melkaya >= 3) { document.getElementById("status-melkaya").innerText = "👑 Полностью эволюционировала, её серебряные крылья светятся чистым неоном."; }
 
@@ -147,8 +144,12 @@
         }
 
         var addLog = "";
-        // Прокачка уровней за разные раунды
         if (hands === 50) {
             vault.diamonds += 1; vault.emeralds += 1; vault.pumps += 1;
             levels.prium += 1; levels.melkaya += 1;
-            addLog = "💎 +1 Алмаз, 💚 +1 Изумруд, ⚙️ +1 Помпа. Серебряные апнули уровень!";} else if (hands >= 40) {vault.diamonds += 1; vault.mixers += 1;levels.sestra += 1;addLog = "💎 +1 Алмаз, ⚙️ +1 Миксер. Приёмная Сестра апнула уровень!";} else if (hands >= 30) {vault.pistons += 1;levels.brat += 1;addLog = "⚙️ +1 Поршень. Брат Толстяк апнул уровень!";} else if (hands >= 15) {vault.sheets += 2; vault.shafts += 2;addLog = "⚙️ +2 Листа, ⚙️ +2 Вала.";} else {vault.coal += 8;addLog = "⬛ +8 Угля.";}updateVaultUI();var timeText = timeLetter === "D" ? "День ☀️" : "Ночь 🌙";out.innerHTML = "✅ КОД ПОДТВЕРЖДЁН!Сложность: " + hands + " рук (" + timeText + ")📦 Дракончики утащили на склад:" + addLog + "";document.getElementById("code-input").value = "";}function resetVault() {if(confirm("Очистить склад и сбросить уровни драконидов?")) {vault = { diamonds: 0, emeralds: 0, mixers: 0, pumps: 0, pistons: 0, sheets: 0, shafts: 0, cogs: 0, water: 0, coal: 0 };levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };updateVaultUI();}}
+            addLog = "💎 +1 Алмаз, 💚 +1 Изумруд, ⚙️ +1 Помпа. Серебряные апнули уровень!";
+        } else if (hands >= 40) {
+            vault.diamonds += 1; vault.mixers += 1;
+            levels.sestra += 1;
+            addLog = "💎 +1 Алмаз, ⚙️ +1 Миксер. Приёмная Сестра апнула уровень!";
+        } else if (hands >= 30) {vault.pistons += 1;levels.brat += 1;addLog = "⚙️ +1 Поршень. Брат Толстяк апнул уровень!";} else if (hands >= 15) {vault.sheets += 2; vault.shafts += 2;addLog = "⚙️ +2 Листа, ⚙️ +2 Вала.";} else {vault.coal += 8;addLog = "⬛ +8 Угля.";}updateVaultUI();var timeText = timeLetter === "D" ? "День ☀️" : "Ночь 🌙";out.innerHTML = "✅ КОД ПОДТВЕРЖДЁН!Сложность: " + hands + " рук (" + timeText + ")📦 Дракончики утащили на склад:" + addLog + "";document.getElementById("code-input").value = "";}function resetVault() {if(confirm("Очистить склад и сбросить уровни драконидов?")) {vault = { diamonds: 0, emeralds: 0, mixers: 0, pumps: 0, pistons: 0, sheets: 0, shafts: 0, cogs: 0, water: 0, coal: 0 };levels = { brat: 1, sestra: 1, prium: 1, melkaya: 1 };updateVaultUI();}}
