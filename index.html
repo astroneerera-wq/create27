@@ -6,6 +6,8 @@
     <style>
         body { background-color: #1a1a1a; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
         h1 { color: #f39c12; }
+        .nav-link { display: inline-block; background: #9b59b6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-bottom: 15px; transition: 0.2s; }
+        .nav-link:hover { background: #8e44ad; box-shadow: 0 0 10px #9b59b6; }
         #setup-area, #status-panel { background: #2c3e50; padding: 15px; border-radius: 10px; max-width: 600px; margin: 20px auto; border: 2px solid #34495e; }
         #necklace { font-size: 24px; color: #00eeee; margin-bottom: 10px; }
         .time-day { color: #f1c40f; font-weight: bold; }
@@ -24,20 +26,25 @@
         .win-banner { background: #27ae60; color: #fff; }
         .lose-banner { background: #c0392b; color: #fff; }
         .code-box { background: #000; color: #00ff00; padding: 5px 10px; font-family: monospace; border-radius: 3px; font-size: 18px; margin-top: 10px; display: inline-block; word-break: break-all; }
-        .link-btn { background: #00eeee; color: #111; margin-top: 10px; display: inline-block; text-decoration: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
+
+    <a href="https://astroneerera-wq.github.io/create27/check" class="nav-link">🖥️ ПЕРЕЙТИ НА СКЛАД ЧЕКЕРА</a>
+
     <h1>🤖 Игра «Which Hand»</h1>
+
     <div id="setup-area">
         <label for="hands-select">Количество рук: </label>
         <select id="hands-select"></select>
         <button id="start-btn" onclick="initGame()">Старт</button>
     </div>
+
     <div id="status-panel">
         <div id="necklace">💎 Ожерелье: <span id="diamond-count">0</span> ловушек</div>
         <div id="time-state">Время суток: <span id="time-val">---</span></div>
     </div>
+
     <div id="result-banner"></div>
     <div id="log">Выберите параметры и нажмите Старт...</div>
     <div id="grid"></div>
@@ -71,7 +78,7 @@
         
         var timeVal = document.getElementById("time-val");
         timeVal.innerText = timeOfDay; timeVal.className = timeOfDay === "День" ? "time-day" : "time-night";
-        document.getElementById("log").innerHTML = "Раунд начался! Ловушек: " + blackCubesCount;
+        document.getElementById("log").innerHTML = "Раунд начался! Время: " + timeOfDay + ". Ловушек: " + blackCubesCount;
 
         var openSlots = []; for(var i = 0; i < handsCount; i++) openSlots.push(i);
 
@@ -133,6 +140,7 @@
             card.innerHTML = "<span class='item-white'>⬜ Белый куб</span>"; showResult(true);
         } else if(content === "Жаба") {
             card.innerHTML = "<span class='item-frog'>🐸 Жаба</span>"; frogInPocket = index;
+            document.getElementById("log").innerHTML = "Жаба в кармане. Кликни по открытой пустой руке.";
         } else if(content === "Палец-указатель") {
             card.innerHTML = "<span class='item-finger'>🫵 Палец</span>"; activeScanner = true;
         }
@@ -149,10 +157,12 @@
         if(isWin) {
             var tLetter = timeOfDay === "День" ? "D" : "N";
             var salt = "Create27SecureSalt";
-            var signature = generateHash(handsCount + tLetter + salt);
+            var rawData = handsCount + tLetter + salt;
+            var signature = generateHash(rawData);
             var secretCode = "WH-" + handsCount + "-" + tLetter + "-" + signature;
+            
             banner.className = "result-banner win-banner";
-            banner.innerHTML = "ПОБЕДА! Код анти-чита: <br><div class='code-box'>" + secretCode + "</div><br><a href='https://astroneerera-wq.github.io/create27/check' target='_blank' class='link-btn'>Перейти на Склад ➡️</a>";
+            banner.innerHTML = "ПОБЕДА! Скопируй этот код анти-чит валидации: <br><div class='code-box'>" + secretCode + "</div>";
         } else {
             banner.className = "result-banner lose-banner"; banner.innerText = "ПРОИГРЫШ!";
         }
